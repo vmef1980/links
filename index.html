@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Víctor Estrada - Ecosistema de Negocios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            margin: 0;
+            background: #050508;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* CONTENEDOR DEL VIDEO DE FONDO */
+        .video-background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-background-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.65; /* Controla la opacidad para que no opaque el texto */
+        }
+
+        /* Capa oscura superior opcional para mejorar contraste */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, transparent 20%, rgba(5, 5, 8, 0.6) 80%);
+            pointer-events: none;
+        }
+
+        /* CONTENEDOR LOGO EFECTO NEÓN */
+        .neon-logo-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+        }
+
+        /* Comportamiento Neón al pasar el cursor (Hover) */
+        .card:hover .neon-logo-container {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+        }
+
+        /* TARJETAS CON EFECTO CRISTAL (GLASSMORPHISM) */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--neon-purple);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 { font-family: 'Orbitron', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-6">
+
+    <!-- CONTENEDOR DINÁMICO DEL VIDEO -->
+    <div class="video-background-container" id="video-root"></div>
+    <div class="video-overlay"></div>
+
+    <header class="text-center mt-12 mb-16 relative z-10">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-widest text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] mb-4">
+            VÉF DIGITAL
+        </h1>
+        <p class="text-slate-400 font-light tracking-wide uppercase text-sm">Explora mis Unidades de Negocio</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 mb-20" id="business-grid">
+        <!-- Tarjetas dinámicas -->
+    </main>
+
+    <footer class="mt-auto text-center relative z-10 pb-10">
+        <div id="whatsapp-root"></div>
+        <p class="text-slate-500 text-xs mt-8 font-light">© 2026 Víctor Manuel Estrada Funes • Innovación & Tecnología</p>
+    </footer>
+
+    <script>
+        // ==========================================
+        // VARIABLES CONFIGURABLES
+        // ==========================================
+        const RUTA_VIDEO_FONDO = "img/splash/tech01.mp4"; // Ruta solicitada
+        const WHATSAPP_NUMERO = "50241084481";
+        const MSG_WHATSAPP = "Hola Víctor, te contacto desde tu portal Splash. Me interesa información sobre: ";
+
+        const negocios = [
+            {
+                id: "rompecabezas",
+                nombre: "Rompecabezas de Guatemala",
+                desc: "Rompecabezas exclusivos y accesorios para coleccionistas.",
+                url: "https://shop.rompecabezas.online",
+                img: "img/logos/RompecabezasDeGuatemala.png",
+                icon: "fa-puzzle-piece"
+            },
+            {
+                id: "tech",
+                nombre: "Tech",
+                desc: "Asesoría experta en sistemas de infraestructura y accesorios IT.",
+                url: "#", 
+                img: "img/logos/Tech.png",
+                icon: "fa-microchip"
+            },
+            {
+                id: "ekipro",
+                nombre: "Ekipro",
+                desc: "Equipamiento profesional para viajeros y nómadas modernos.",
+                url: "https://ekipro.rompecabezas.online/",
+                img: "img/logos/ekipro.png",
+                icon: "fa-suitcase-rolling"
+            },
+            {
+                id: "organizagt",
+                nombre: "OrganizaGT",
+                desc: "Soluciones de organización para el hogar y la industria eficiente.",
+                url: "https://organizagt.rompecabezas.online/",
+                img: "img/logos/OrganizaGT.png",
+                icon: "fa-layer-group"
+            },
+            {
+                id: "guatecocina",
+                nombre: "Guatecocina",
+                desc: "Suministros integrales para restaurantes, hoteles y bares.",
+                url: "https://guatecocina.rompecabezas.online/",
+                img: "img/logos/GuateCocina.png",
+                icon: "fa-fire-burner"
+            },
+            {
+                id: "guate3dlabs",
+                nombre: "Guate3DLabs",
+                desc: "Laboratorio especializado en impresión 3D y prototipado rápido.",
+                url: "#",
+                img: "img/logos/Guate3DLabs.png",
+                icon: "fa-cube"
+            }
+        ];
+
+        // ==========================================
+        // INYECCIÓN DE COMPONENTES
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            const grid = document.getElementById('business-grid');
+            const waRoot = document.getElementById('whatsapp-root');
+            const videoRoot = document.getElementById('video-root');
+
+            // Inyectar Video de Fondo Seguro (Muted + Playsinline para móviles)
+            videoRoot.innerHTML = `
+                <video autoplay loop muted playsinline poster="">
+                    <source src="${RUTA_VIDEO_FONDO}" type="video/mp4">
+                    Tu navegador no soporta videos de fondo.
+                </video>
+            `;
+
+            // Construir rejilla de negocios
+            negocios.forEach(biz => {
+                const card = document.createElement('div');
+                card.className = "card p-8 flex flex-col items-center text-center cursor-pointer";
+                card.onclick = () => window.open(biz.url, '_blank');
+                
+                card.innerHTML = `
+                    <div class="neon-logo-container">
+                        <img src="${biz.img}" alt="${biz.nombre}" class="max-w-[70%] max-h-[70%] object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <i class="fa-solid ${biz.icon} text-3xl text-white hidden"></i>
+                    </div>
+                    <h2 class="text-xl font-bold mb-3 tracking-tight">${biz.nombre}</h2>
+                    <p class="text-sm text-slate-400 font-light leading-relaxed mb-6">${biz.desc}</p>
+                    <div class="mt-auto inline-flex items-center text-[10px] uppercase tracking-[3px] text-blue-400 group">
+                        Explorar sitio <i class="fa-solid fa-chevron-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Botón Único de WhatsApp Centralizado
+            waRoot.innerHTML = `
+                <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(MSG_WHATSAPP)}" 
+                   target="_blank" 
+                   class="inline-flex items-center gap-4 bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-emerald-500/30">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    WHATSAPP CENTRAL
+                </a>
+            `;
+        });
+    </script>
+</body>
+</html>
